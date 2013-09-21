@@ -1,8 +1,12 @@
 <?php
 
-require('../config.php');
+require('/config.php');
 
-include_once("../include/chromephp.php");
+if (isset($_SESSION['user']) || !empty($_SESSION['user']))
+{
+    header("Location: http://" . $_SERVER['SERVER_NAME']);
+    die();
+}
 
 $errors = array();
 
@@ -31,7 +35,7 @@ if (!empty($_POST))
         }
         catch (PDOException $e)
         {
-            die("Error: " . $e->getMessage());
+            die();
         }
         
         $row = $stmt->fetch();
@@ -52,7 +56,7 @@ if (!empty($_POST))
         }
         catch (PDOException $e)
         {
-            die("Error: " . $e->getMessage()); 
+            die(); 
         }
         
         $row = $stmt->fetch();
@@ -85,7 +89,7 @@ if (!empty($_POST))
             }
             catch(PDOException $e)
             {
-                die("Error: " . $e->getMessage());   
+                die();   
             }
             
             header("Location: http://" . $_SERVER['SERVER_NAME'] . "/?p=login");
@@ -100,7 +104,8 @@ if (!empty($_POST))
 <html lang="en">
 <head>
     <title>Radford Rate 'Em</title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <link rel="stylesheet" href="/css/default.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile.structure-1.3.2.min.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
     
@@ -108,19 +113,30 @@ if (!empty($_POST))
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
 </head>
 <body>
-    <div data-role="content">
-        <?php 
-            if (!empty($errors))
-                foreach ($errors as $error)
-                    print("<code style='color:red'>$error</code><br>");
-        ?>
-        <form id="register" action="index.php" method="post">
-            <input type="email" name="email" placeholder="Email" value="<?php echo $_POST['email'] ?>" />
-            <input type="text" name="username" placeholder="Username" value="<?php echo $_POST['username'] ?>"/>
-            <input type="password" name="password" placeholder="Password" />
-            <input type="password" name="pass_confirm" placeholder="Confirm Password" />
-            <input type="submit" value="Register" />
-        </form>
+    <div data-role="page" data-theme="a">
+        <div data-role="content">
+            <?php 
+                if (!empty($errors))
+                    foreach ($errors as $error)
+                        print("<code style='color:red'>$error</code><br>");
+            ?>
+            <form id="register" action="/register/index.php" method="post" data-ajax="false">
+                <input type="email" name="email" placeholder="Email" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email'], ENT_QUOTES, 'UTF-8'); ?>" />
+                <input type="text" name="username" placeholder="Username" value="<?php if (isset($_POST['username'])) echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>"/>
+                <input type="password" name="password" placeholder="Password" />
+                <input type="password" name="pass_confirm" placeholder="Confirm Password" />
+                <input type="submit" value="Register" />
+            </form>
+            <footer data-role="footer" data-position="fixed">
+                <nav data-role="navbar">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#">Link 2</a></li>
+                        <li><a href="#">Link 3</a></li>
+                    </ul>
+                </nav>
+            </footer>
+        </div>
     </div>
 </body>
 </html>

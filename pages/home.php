@@ -1,4 +1,4 @@
-    <div data-role="page" id="home">
+    <div data-theme="a" data-role="page" id="home">
         <header data-role="header">
             <h1>Radford Rate 'Em</h1>
         </header>
