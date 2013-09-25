@@ -1,5 +1,6 @@
 <?php    
     error_reporting(1);
+    include_once('include/chromephp.php');
 
     $username = "root";
     $password = "";

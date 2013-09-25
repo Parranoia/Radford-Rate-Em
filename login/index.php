@@ -4,6 +4,7 @@ require('../config.php');
 
 include_once("../include/chromephp.php");
 
+// If already logged in, redirect to the homepage
 if (isset($_SESSION['user']) || !empty($_SESSION['user']))
 {
     header("Location: http://" . $_SERVER['SERVER_NAME']);
@@ -12,6 +13,7 @@ if (isset($_SESSION['user']) || !empty($_SESSION['user']))
 
 $user = "";
 
+// Check if data has been submitted or not
 if (!empty($_POST))
 {
     $query = "SELECT id, username, password, salt, email FROM users WHERE username = :username";
@@ -81,8 +83,8 @@ if (!empty($_POST))
                     print("<code style='color:red'>Username or password incorrect</code><br />");
             ?>
             <form id="login" action="/login/index.php" method="post" data-ajax="false">
-                <input type="text" name="username" placeholder="Username" value="<?php echo $user ?>" />
-                <input type="password" name="password" placeholder="Password" />
+                <input type="text"  maxlength="28"name="username" placeholder="Username" value="<?php echo $user ?>" />
+                <input type="password" maxlength="28" name="password" placeholder="Password" />
                 <input type="submit" value="Login" />
             </form>
             <a href="/register" data-role="button">Register</a>
