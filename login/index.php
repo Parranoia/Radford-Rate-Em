@@ -76,7 +76,7 @@ if (!empty($_POST))
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
 </head>
 <body>
-    <div data-role="page" data-theme="a">
+    <div data-role="page" data-theme="b">
         <div data-role="content">
             <?php
                 if ($user != "")

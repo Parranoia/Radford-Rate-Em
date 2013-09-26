@@ -7,9 +7,9 @@ if (isset($_GET['course']))
 {
     include_once('/pages/course.php');
 }
-else if (isset($_GET['professor']))
+else if (isset($_GET['class']))
 {
-    include_once('/pages/professor.php');
+    include_once('/pages/class.php');
 }
 else
 {

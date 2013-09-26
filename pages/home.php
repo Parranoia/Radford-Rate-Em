@@ -1,8 +1,3 @@
-    <div data-theme="a" data-role="page" id="home">
-        <header data-role="header">
-            <h1>Radford Rate 'Em</h1>
-        </header>
-        <article data-role="content">
 <?php
                     
     $query = "SELECT college, abbr FROM colleges ORDER BY college ASC";
@@ -20,7 +15,7 @@
     // Loop through all of the colleges
     while ($row = $stmt->fetch())
     {
-        $query = "SELECT college, course_number, name FROM courses WHERE college = :abbr";
+        $query = "SELECT id, college, course_number, name FROM courses WHERE college = :abbr ORDER BY course_number ASC";
         
         $query_params = array(':abbr' => $row['abbr']);
         
@@ -49,7 +44,7 @@
         {
             // Adding tabs makes things a little hard to read, but the output is much nicer
             $course = $row2['college'] . " " . $row2['course_number'];
-            print "\t\t\t\t<li><a href='?course=" . $course . "'>" . 
+            print "\t\t\t\t<li><a href='?course=" . $row2['id'] . "'>" . 
                   "\n\t\t\t\t\t<h1>" . $row2['college'] . " " . $row2['course_number'] . "</h1>" . 
                   "\n\t\t\t\t\t<p>" . $row2['name'] . "</p></a>" .
                   "\n\t\t\t\t</li>\n";  
@@ -76,6 +71,4 @@
             <p>ITEC 471</p></a>
         </li>
     </ul>
-    -->
-        </article>
-        
+    -->  

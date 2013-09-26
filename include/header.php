@@ -11,3 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />  
 </head>
 <body>
+    <div data-theme="a" data-role="page" data-add-back-btn="true">
+        <header data-role="header">
+            <h1>Radford Rate 'Em</h1>
+        </header>
+        <article data-role="content">
