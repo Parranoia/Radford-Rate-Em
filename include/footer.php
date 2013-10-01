@@ -23,7 +23,7 @@ else
         }
         else if ($_GET['p'] == 'editProfile')
         {
-            print "\t\t\t<li><a data-icon='check' href='?p=editProfile'>Save Changes</a></li>\n";
+            //print "\t\t\t<li><a data-icon='check' href='?p=editProfile'>Save Changes</a></li>\n";
             print "\t\t\t<li><a data-icon='info' href='?p=profile'>View Profile</a></li>\n";
         }
     }

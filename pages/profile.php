@@ -39,7 +39,6 @@
         }
         catch(PDOException $e)
         {
-            ChromePhp::log($e);
             die();   
         }
     }
@@ -64,7 +63,6 @@ try
 }
 catch(PDOException $e)
 {
-    ChromePhp::log($e);
     die();   
 }
 

@@ -71,8 +71,6 @@ if (!empty($_POST))
         
         if (empty($errors))
         {        
-            
-            ChromePhp::log("6");
             $query = "INSERT INTO users (username, password, salt, email) VALUES
                         (:username, :password, :salt, :email)";
             
