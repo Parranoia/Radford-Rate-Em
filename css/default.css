@@ -829,7 +829,6 @@ a.ui-link-inherit {
     background: -ms-radial-gradient(center, ellipse cover,  #da0000 0%,#c00000 100%); /* IE10+ */
     background: radial-gradient(ellipse at center,  #da0000 0%,#c00000 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#da0000', endColorstr='#c00000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-
-
 }
+
+p.ui-bar.ui-bar-b { margin: 1em ; }

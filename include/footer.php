@@ -9,6 +9,8 @@ else
 {
     if (isset($_GET['class']))
         print "\t\t\t<li><a data-icon='plus' href='/pages/add_assignment.php'>Add Assignment</a></li>\n";
+    if (isset($_GET['assignment']))
+        print "\t\t\t<li><a data-icon='plus' href='#addComment' data-rel='popup' data-position-to='window' data-role='button' data-inline='true'>Add Comment</a></li>\n";
     if (!isset($_GET['p']))
         print "\t\t\t<li><a data-icon='info' href='?p=profile'>View Profile</a></li>\n";
     else

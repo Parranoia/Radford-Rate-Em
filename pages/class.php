@@ -9,7 +9,7 @@
                 "INNER JOIN classes " . 
                 "ON classes.id = :class AND assignments.class = classes.id " .
                 "INNER JOIN professors " .
-                "ON PROFESSORS.name = classes.professor";
+                "ON professors.name = classes.professor";
     $query_params = array(':class' => $_GET['class']);
     
     try
@@ -49,7 +49,7 @@
     
         do
         {
-            print "\t\t\t<li><a href='?assignemnt=" . $row['id'] . "'>" . 
+            print "\t\t\t<li><a href='?assignment=" . $row['id'] . "'>" . 
                 "\n\t\t\t\t<h1>" . $row['asgn_name'] . " | " . intToGrade($row['score']/$row['num_scores']) . "</h1>" . 
                 "\n\t\t\t\t<p>" . $row['asgn_desc'] . "</p></a>" .
                 

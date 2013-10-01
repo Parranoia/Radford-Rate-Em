@@ -11,6 +11,10 @@ else if (isset($_GET['class']))
 {
     include_once('/pages/class.php');
 }
+else if (isset($_GET['assignment']))
+{
+    include_once('/pages/assignment.php');   
+}
 else if (isset($_GET['p']))
 {
     if ($_GET['p'] == 'profile')

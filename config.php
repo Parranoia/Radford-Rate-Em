@@ -27,6 +27,7 @@
     {
         if ($num != null)
         {
+            $num = (int)$num;
             switch($num)
             {
                 case 0:
