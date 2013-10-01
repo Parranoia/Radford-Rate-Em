@@ -8,16 +8,15 @@ if (!isset($_GET['assignment']))
 // Handle post data
 if (!empty($_POST))
 {
-    ChromePhp::log($_POST['comment']);
-    ChromePhp::log(intval($_POST['grade']));
     if (!isset($_SESSION['user']) || empty($_SESSION['user']))
     {
         header("Location: http://" . $_SERVER['SERVER_NAME']);
         die();
     }
     
-    $post_query = "SELECT id FROM comments WHERE user = :user";
-    $post_params = array(':user' => $_SESSION['user']['id']);
+    $post_query = "SELECT id FROM comments WHERE user = :user AND assignment = :assignment";
+    $post_params = array(':user' => $_SESSION['user']['id'],
+                        ':assignment' => $_GET['assignment']);
     
     try
     {
@@ -31,7 +30,10 @@ if (!empty($_POST))
     $row = $post_stmt->fetch();
     
     if (!empty($row))
+    {
+        header("Location: http://" . $_SERVER['SERVER_NAME'] . "?assignment=" . $_GET['assignment']);
         die();
+    }
     else
     {
         $post_query = "INSERT INTO comments (assignment, user, text) VALUES (:assignment, :user, :text); " .
@@ -56,10 +58,10 @@ if (!empty($_POST))
     die();
 }
 
-$query = "SELECT comments.id, comments.assignment, text, comments.user, asgn_name, asgn_desc, score, num_scores, users.username, ratings.rating " .
+$query = "SELECT comments.id, comments.assignment, text, comments.user, asgn_name, asgn_desc, grade, users.username, ratings.rating " .
           "FROM comments " .
           "INNER JOIN assignments "  .
-          "ON assignments.id = :assignment " .
+          "ON assignments.id = :assignment AND comments.assignment = :assignment " .
           "INNER JOIN users " .
           "ON users.id = comments.user " .
           "INNER JOIN ratings " .
@@ -81,7 +83,7 @@ $row = $stmt->fetch();
 // This occurs when no comments are found
 if (empty($row))
 {
-    $query2 = "SELECT asgn_name, asgn_desc, score, num_scores FROM assignments WHERE id = :assignment";
+    $query2 = "SELECT asgn_name, asgn_desc, grade FROM assignments WHERE id = :assignment";
         
     try
     {
@@ -95,7 +97,7 @@ if (empty($row))
     $row2 = $stmt2->fetch();
     
     // Calculate grade to display
-    $grade = intToGrade($row2['score'] / $row2['num_scores']);
+    $grade = intToGrade($row2['grade']);
     
     print "\t\t<ul data-role='listview' data-theme='a' data-divider-theme='c'>\n";
     print "\t\t\t<li data-role='list-divider'>" . 
@@ -106,7 +108,7 @@ if (empty($row))
 }
 else
 {
-    $grade = intToGrade($row['score'] / $row['num_scores']);
+    $grade = intToGrade($row['grade']);
     
     print "\t\t<ul data-role='listview' data-theme='a' data-divider-theme='a'>\n";
     print "\t\t\t<li data-role='list-divider'>" . 
@@ -132,7 +134,6 @@ print "\t\t</ul>";
 ?>
 
 <div data-role="popup" data-theme="a" data-overlay-theme="a" data-corners="false" id="addComment">
-    <a href="#"  data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
     <form style="width: 100%" action="?assignment=<?php echo $_GET['assignment'] ?>" method="POST" data-ajax="false">    
         <div data-role="header" data-theme="a"><h6>Comment</h6></div>
         <p class="ui-bar">

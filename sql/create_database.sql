@@ -22,8 +22,7 @@ CREATE TABLE IF NOT EXISTS `assignments` (
   `class` int(10) unsigned NOT NULL,
   `asgn_name` char(255) NOT NULL,
   `asgn_desc` varchar(500) NOT NULL,
-  `score` int(10) unsigned DEFAULT '0',
-  `num_scores` int(10) unsigned NOT NULL DEFAULT '0',
+  `grade` tinyint(2) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `assignment` (`class`,`asgn_name`,`asgn_desc`),
   CONSTRAINT `class` FOREIGN KEY (`class`) REFERENCES `classes` (`id`)
@@ -162,8 +161,10 @@ SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `after_insert_ratings` AFTER INSERT ON `ratings` FOR EACH ROW BEGIN
 	UPDATE assignments
-	SET assignments.score = assignments.score + NEW.rating, 
-	assignments.num_scores = assignments.num_scores + 1
+	SET assignments.grade = 
+		(SELECT SUM(rating) / COUNT(*)
+			FROM ratings 
+			WHERE ratings.assignment = NEW.assignment)
 	WHERE assignments.id = NEW.assignment;
 END//
 DELIMITER ;
@@ -177,8 +178,10 @@ DELIMITER //
 CREATE TRIGGER `after_update_assignment` AFTER UPDATE ON `assignments` FOR EACH ROW BEGIN
 	UPDATE classes 
 	SET classes.grade = 
-	(SELECT SUM(score) FROM assignments WHERE class = NEW.class) / 
-	(SELECT SUM(num_scores) FROM assignments WHERE class = NEW.class) 
+		(SELECT SUM(grade) / COUNT(*)
+		FROM assignments
+		WHERE class = NEW.class 
+		AND grade IS NOT NULL)
 	WHERE classes.id = NEW.class;
 END//
 DELIMITER ;
@@ -207,7 +210,10 @@ SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `after_update_ratings` AFTER UPDATE ON `ratings` FOR EACH ROW BEGIN
 	UPDATE assignments
-	SET assignments.score = assignments.score + NEW.rating - OLD.rating
+	SET assignments.grade = 
+		(SELECT SUM(rating) / COUNT(*)
+			FROM ratings 
+			WHERE ratings.assignment = NEW.assignment)
 	WHERE assignments.id = NEW.assignment;
 END//
 DELIMITER ;

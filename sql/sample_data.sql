@@ -9,19 +9,18 @@
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Dumping structure for table radford_rate_em.classes
-DROP TABLE IF EXISTS `classes`;
-CREATE TABLE IF NOT EXISTS `classes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `course` char(10) NOT NULL,
-  `professor` varchar(255) NOT NULL,
-  `grade` tinyint(2) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `course` (`course`,`professor`),
-  KEY `professor` (`professor`),
-  CONSTRAINT `professor` FOREIGN KEY (`professor`) REFERENCES `professors` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+-- Dumping data for table radford_rate_em.assignments: ~6 rows (approximately)
+DELETE FROM `assignments`;
+/*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
+INSERT INTO `assignments` (`id`, `class`, `asgn_name`, `asgn_desc`, `grade`) VALUES
+	(1, 28, 'HW 1', 'This is a test', NULL),
+	(2, 29, 'Test 1', 'Test 1', NULL),
+	(3, 32, 'Final Exam', 'Final', NULL),
+	(4, 28, 'HW 2', 'This is also a test!', NULL),
+	(5, 11, 'Quiz 2', 'Quiz number 2', NULL),
+	(6, 28, 'HW 3', 'Java ', 7),
+	(7, 19, 'Pop Quiz 1', 'Covers introductory topics', 10);
+/*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 
 -- Dumping data for table radford_rate_em.classes: ~33 rows (approximately)
 DELETE FROM `classes`;
@@ -37,7 +36,7 @@ INSERT INTO `classes` (`id`, `course`, `professor`, `grade`) VALUES
 	(8, 'ECON 106', 'Sanaz Fesharaki', NULL),
 	(9, 'ECON 106', 'Seife Dendir', NULL),
 	(10, 'ECON 106', 'Sumati Srinivas', NULL),
-	(11, 'ITEC 100', 'Chen-Chi Shing', 8),
+	(11, 'ITEC 100', 'Chen-Chi Shing', NULL),
 	(12, 'ITEC 100', 'Sallie B. Dodson', NULL),
 	(13, 'ITEC 109', 'Arthur E. Carter', NULL),
 	(14, 'ITEC 109', 'Hui Wang', NULL),
@@ -45,7 +44,7 @@ INSERT INTO `classes` (`id`, `course`, `professor`, `grade`) VALUES
 	(16, 'ITEC 112', 'Sallie B. Dodson', NULL),
 	(17, 'ITEC 120', 'Donald J. Braffitt', NULL),
 	(18, 'ITEC 120', 'Jeffrey J. Pittges', NULL),
-	(19, 'ITEC 122', 'Chen-Chi Shing', NULL),
+	(19, 'ITEC 122', 'Chen-Chi Shing', 10),
 	(20, 'ITEC 122', 'David P. Daughtery', NULL),
 	(21, 'ITEC 220', 'David P. Daughtery', NULL),
 	(22, 'ITEC 220', 'Joseph D. Chase', NULL),
@@ -54,25 +53,13 @@ INSERT INTO `classes` (`id`, `course`, `professor`, `grade`) VALUES
 	(25, 'ITEC 281', 'Arthur E. Carter', NULL),
 	(26, 'ITEC 281', 'Robert D. Spillman', NULL),
 	(27, 'ITEC 304', 'Robert H. Phillips', NULL),
-	(28, 'ITEC 307', 'Ian Barland', 8),
-	(29, 'ITEC 310', 'Chen-Chi Shing', 7),
+	(28, 'ITEC 307', 'Ian Barland', 7),
+	(29, 'ITEC 310', 'Chen-Chi Shing', NULL),
 	(30, 'ITEC 320', 'Edward G. Okie', NULL),
 	(31, 'ITEC 324', 'Hwajung Lee', NULL),
 	(32, 'ITEC 325', 'Jack C. Davis', NULL),
 	(33, 'ITEC 340', 'Robert H. Phillips', NULL);
 /*!40000 ALTER TABLE `classes` ENABLE KEYS */;
-
-
--- Dumping structure for table radford_rate_em.colleges
-DROP TABLE IF EXISTS `colleges`;
-CREATE TABLE IF NOT EXISTS `colleges` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `college` varchar(255) NOT NULL,
-  `abbr` char(5) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `college` (`college`),
-  UNIQUE KEY `abbr` (`abbr`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table radford_rate_em.colleges: ~5 rows (approximately)
 DELETE FROM `colleges`;
@@ -84,19 +71,6 @@ INSERT INTO `colleges` (`id`, `college`, `abbr`) VALUES
 	(4, 'Art Education', 'ARTE'),
 	(5, 'Economics', 'ECON');
 /*!40000 ALTER TABLE `colleges` ENABLE KEYS */;
-
-
--- Dumping structure for table radford_rate_em.courses
-DROP TABLE IF EXISTS `courses`;
-CREATE TABLE IF NOT EXISTS `courses` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `college` char(5) NOT NULL,
-  `course_number` smallint(4) unsigned NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `college` (`college`,`course_number`),
-  CONSTRAINT `college` FOREIGN KEY (`college`) REFERENCES `colleges` (`abbr`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table radford_rate_em.courses: ~19 rows (approximately)
 DELETE FROM `courses`;
@@ -123,41 +97,11 @@ INSERT INTO `courses` (`id`, `college`, `course_number`, `name`) VALUES
 	(38, 'ECON', 106, 'Principles of Microeconomics');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 
-
--- Dumping structure for table radford_rate_em.enrolled
-DROP TABLE IF EXISTS `enrolled`;
-CREATE TABLE IF NOT EXISTS `enrolled` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user` int(11) unsigned NOT NULL,
-  `class` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_enroll` (`user`,`class`),
-  KEY `enrolled_class` (`class`),
-  CONSTRAINT `enrolled_class` FOREIGN KEY (`class`) REFERENCES `classes` (`id`),
-  CONSTRAINT `enrolled_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table radford_rate_em.enrolled: ~0 rows (approximately)
-DELETE FROM `enrolled`;
-/*!40000 ALTER TABLE `enrolled` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enrolled` ENABLE KEYS */;
-
-
--- Dumping structure for table radford_rate_em.professors
-DROP TABLE IF EXISTS `professors`;
-CREATE TABLE IF NOT EXISTS `professors` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `grade` tinyint(2) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
-
 -- Dumping data for table radford_rate_em.professors: ~25 rows (approximately)
 DELETE FROM `professors`;
 /*!40000 ALTER TABLE `professors` DISABLE KEYS */;
 INSERT INTO `professors` (`id`, `name`, `grade`) VALUES
-	(1, 'Chen-Chi Shing', 4),
+	(1, 'Chen-Chi Shing', 10),
 	(2, 'Sallie B. Dodson', NULL),
 	(3, 'Hui Wang', NULL),
 	(4, 'Arthur E. Carter', NULL),
@@ -170,7 +114,7 @@ INSERT INTO `professors` (`id`, `name`, `grade`) VALUES
 	(11, 'Samuel R. Jennings', NULL),
 	(12, 'Robert D. Spillman', NULL),
 	(13, 'Robert H. Phillips', NULL),
-	(14, 'Ian Barland', 8),
+	(14, 'Ian Barland', 7),
 	(15, 'Edward G. Okie', NULL),
 	(16, 'Hwajung Lee', NULL),
 	(17, 'Nozar Hashemzadeh', NULL),

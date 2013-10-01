@@ -21,6 +21,10 @@ else if (isset($_GET['p']))
     {
         include_once('/pages/profile.php');   
     }
+    else if ($_GET['p'] == 'editProfile')
+    {
+        include_once('/pages/edit_profile.php');   
+    }
 }
 else
 {
