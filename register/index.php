@@ -1,6 +1,6 @@
 <?php
 
-require('/config.php');
+require('../config.php');
 
 // Redirect if user is already logged in
 if (isset($_SESSION['user']) || !empty($_SESSION['user']))
@@ -15,14 +15,39 @@ $errors = array();
 // Check whether or not data has been submitted
 if (!empty($_POST))
 {
-    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) 
-        $errors[0] = "Invalid email address";
+    $error_count = 0;
+    
+    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+    {
+        $errors[$error_count] = "Invalid email address";
+        $error_count++;
+    }
+    if (!preg_match('/^[A-Za-z][A-Za-z0-9]{3,15}$/', $_POST['username']))
+    {
+        $errors[$error_count] = "Invalid username";
+        $error_count++;
+        $errors[$error_count] = "&nbsp;&nbsp;&nbsp;Username can only contain alphanumeric characters";
+        $error_count++;
+        $errors[$error_count] = "&nbsp;&nbsp;&nbsp;Username must start with a letter";
+        $error_count++;
+        $errors[$error_count] = "&nbsp;&nbsp;&nbsp;Username must be between 4 and 16 characters long";
+        $error_count++;
+    }
     if (empty($_POST['username']))
-        $errors[1] = "Please enter a username";
+    {
+        $errors[$error_count] = "Please enter a username";
+        $error_count++;
+    }
     if (empty($_POST['password']))
-        $errors[2] = "Please enter a password";
+    {
+        $errors[$error_count] = "Please enter a password";
+        $error_count++;
+    }
     if ($_POST['password'] !== $_POST['pass_confirm'])
-        $errors[3] = "Passwords do not match";
+    {
+        $errors[$error_count] = "Passwords do not match";
+        $error_count++;
+    }
     
     if (empty($errors))
     {                
@@ -45,7 +70,8 @@ if (!empty($_POST))
         
         if ($row)
         {
-            $errors[4] = "This username already exists";
+            $errors[$error_count] = "This username already exists";
+            $error_count++;
         }
         
         $query = "SELECT 1 FROM users WHERE email = :email";
@@ -66,7 +92,8 @@ if (!empty($_POST))
         
         if ($row)
         {
-            $errors[5] = "This email is already in use";
+            $errors[$error_count] = "This email is already in use";
+            $error_count++;
         }
         
         if (empty($errors))
@@ -93,7 +120,7 @@ if (!empty($_POST))
                 die();   
             }
             
-            header("Location: http://" . $_SERVER['SERVER_NAME'] . "/?p=login");
+            header("Location: http://" . $_SERVER['SERVER_NAME'] . "/login");
             die("Redirecting");
         }
     }
@@ -132,8 +159,6 @@ if (!empty($_POST))
                 <nav data-role="navbar">
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="#">Link 2</a></li>
-                        <li><a href="#">Link 3</a></li>
                     </ul>
                 </nav>
             </footer>

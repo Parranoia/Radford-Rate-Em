@@ -14,5 +14,6 @@
     <div data-theme="a" data-role="page" data-add-back-btn="true">
         <header data-role="header">
             <h1>Radford Rate 'Em</h1>
+            <a href="/" data-icon="home" class="ui-btn-right">Home</a>
         </header>
         <article data-role="content">

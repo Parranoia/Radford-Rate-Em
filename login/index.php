@@ -88,6 +88,13 @@ if (!empty($_POST))
                 <input type="submit" value="Login" />
             </form>
             <a href="/register" data-role="button">Register</a>
+            <footer data-role="footer" data-position="fixed">
+                <nav data-role="navbar">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                    </ul>
+                </nav>
+            </footer>
         </div>
     </div>
 </body>
